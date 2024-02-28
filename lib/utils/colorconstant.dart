@@ -5,4 +5,5 @@ class ColorContant {
   static Color? cusred = Colors.red[100];
   static Color? cusgreen = Colors.green[100];
   static Color? cusyellow = Colors.yellow[100];
+  static Color selblue = const Color(0xff0165E1);
 }
