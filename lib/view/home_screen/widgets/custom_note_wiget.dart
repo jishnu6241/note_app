@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CustomNoteWidget extends StatefulWidget {
   const CustomNoteWidget({
@@ -75,7 +76,12 @@ class _CustomNoteWidgetState extends State<CustomNoteWidget> {
                 const SizedBox(
                   width: 10,
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
+                IconButton(
+                    onPressed: () {
+                      Share.share(
+                          "${widget.title},${widget.des},${widget.date}");
+                    },
+                    icon: const Icon(Icons.share)),
               ],
             )
           ],

@@ -67,6 +67,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     height: 20,
                   ),
                   TextFormField(
+                    maxLines: 2,
                     decoration: InputDecoration(
                         label: const Text(
                           "Description",
