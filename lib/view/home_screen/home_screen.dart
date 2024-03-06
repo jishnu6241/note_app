@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:note_app/controller/note_controller.dart';
 import 'package:note_app/view/home_screen/widgets/custom_bottom_sheet.dart';
 import 'package:note_app/view/home_screen/widgets/custom_note_wiget.dart';
@@ -12,11 +13,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   NoteScreenController noteScreenController = NoteScreenController();
+  var myBox = Hive.box("noteBox");
+  @override
+  void initState() {
+    noteScreenController.init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xff00bfff),
+          backgroundColor: const Color(0xff79fe0c),
           onPressed: () {
             NoteScreenController.clearControler();
             showModalBottomSheet(
@@ -47,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           centerTitle: true,
         ),
-        body: noteScreenController.notedb.isEmpty
+        body: noteScreenController.noteKeys.isEmpty
             ? const Center(
                 child: Text("No Data Found"),
               )
@@ -55,41 +63,48 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 reverse: true,
                 padding: const EdgeInsets.all(15),
-                itemBuilder: (context, index) => CustomNoteWidget(
-                      title: noteScreenController.notedb[index]["title"],
-                      des: noteScreenController.notedb[index]["des"],
-                      date: noteScreenController.notedb[index]["date"],
-                      noteColor: noteScreenController.notedb[index]["color"],
-                      onDeletePressed: () {
-                        noteScreenController.deleteData(index);
-                        setState(() {});
-                      },
-                      onEditPressed: () {
-                        NoteScreenController.titlecontroller.text =
-                            noteScreenController.notedb[index]["title"];
-                        NoteScreenController.descontroller.text =
-                            noteScreenController.notedb[index]["des"];
-                        NoteScreenController.datecontroller.text =
-                            noteScreenController.notedb[index]["date"];
+                itemBuilder: (context, index) {
+                  var element = myBox.get(noteScreenController.noteKeys[index]);
+                  return CustomNoteWidget(
+                    title: element["title"],
+                    des: element["des"],
+                    date: element["date"],
+                    noteColor: element["color"] != null
+                        ? NoteScreenController.noteColor[element["color"]]
+                        : Colors.blue[100],
+                    onDeletePressed: () {
+                      noteScreenController
+                          .deleteData(noteScreenController.noteKeys[index]);
+                      setState(() {});
+                    },
+                    onEditPressed: () {
+                      NoteScreenController.titlecontroller.text =
+                          element["title"];
+                      NoteScreenController.descontroller.text = element["des"];
+                      NoteScreenController.datecontroller.text =
+                          element["date"];
 
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            showDragHandle: true,
-                            context: context,
-                            builder: (context) => CustomBottomSheet(
-                                  isEdit: true,
-                                  onSavePressed: () {
-                                    noteScreenController.editData(index);
-                                    NoteScreenController.clearControler();
-                                    setState(() {});
-                                    Navigator.pop(context);
-                                  },
-                                ));
-                      },
-                    ),
+                      showModalBottomSheet(
+                          isScrollControlled: true,
+                          showDragHandle: true,
+                          context: context,
+                          builder: (context) => CustomBottomSheet(
+                                isEdit: true,
+                                onSavePressed: () {
+                                  noteScreenController.editData(
+                                      noteScreenController.noteKeys[index]);
+
+                                  setState(() {});
+                                  NoteScreenController.clearControler();
+                                  Navigator.pop(context);
+                                },
+                              ));
+                    },
+                  );
+                },
                 separatorBuilder: (context, index) => const SizedBox(
                       height: 10,
                     ),
-                itemCount: noteScreenController.notedb.length));
+                itemCount: noteScreenController.noteKeys.length));
   }
 }

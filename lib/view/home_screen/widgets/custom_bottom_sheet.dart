@@ -17,13 +17,6 @@ class CustomBottomSheet extends StatefulWidget {
 }
 
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
-  List noteColor = [
-    Colors.blue[100],
-    Colors.red[100],
-    Colors.green[100],
-    Colors.yellow[100],
-  ];
-  var selectedColorIndex = 0;
   var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -144,20 +137,23 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                               onTap: () {
                                 NoteScreenController obj =
                                     NoteScreenController();
-                                selectedColorIndex = index;
+                                NoteScreenController.selecteColorIndex = index;
                                 obj.onColorSelection(
-                                    noteColor[selectedColorIndex]);
+                                    NoteScreenController.selecteColorIndex);
                                 bottomSetState(() {});
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    border: selectedColorIndex == index
+                                    border: NoteScreenController
+                                                .selecteColorIndex ==
+                                            index
                                         ? Border.all(
                                             width: 2.3,
                                             color: ColorContant.selblue)
                                         : null,
-                                    color: noteColor[index]),
+                                    color:
+                                        NoteScreenController.noteColor[index]),
                                 width: 55,
                               ),
                             ),

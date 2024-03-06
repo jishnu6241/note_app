@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/controller/note_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CustomNoteWidget extends StatefulWidget {
@@ -22,6 +23,7 @@ class CustomNoteWidget extends StatefulWidget {
 }
 
 class _CustomNoteWidgetState extends State<CustomNoteWidget> {
+  NoteScreenController c2 = NoteScreenController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,7 +81,7 @@ class _CustomNoteWidgetState extends State<CustomNoteWidget> {
                 IconButton(
                     onPressed: () {
                       Share.share(
-                          "${widget.title},${widget.des},${widget.date}");
+                          "${widget.title.toUpperCase()}\n${widget.des.toLowerCase().substring(0, 5)}...\t\t\t${widget.date}");
                     },
                     icon: const Icon(Icons.share)),
               ],
