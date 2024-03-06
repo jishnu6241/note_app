@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:note_app/controller/note_controller.dart';
+import 'package:note_app/utils/colorconstant.dart';
 import 'package:note_app/view/home_screen/widgets/custom_bottom_sheet.dart';
 import 'package:note_app/view/home_screen/widgets/custom_note_wiget.dart';
 
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xff79fe0c),
+          backgroundColor: const Color(0xff00bfff),
           onPressed: () {
             NoteScreenController.clearControler();
             showModalBottomSheet(
